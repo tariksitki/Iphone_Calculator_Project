@@ -63,23 +63,25 @@ let operatorInMemory = null;
 
     const getValueAsNum = () => {
         return parseFloat(getValueAsStr());
+    
     }
 
+    
 
     const setStrAsValue = (valueStr) => {
-        if (valueStr[valueStr.length - 1] === ",") {
-            valueEl.innerHTML += ",";
+        if (valueStr[valueStr.length - 1] === ".") {
+            valueEl.innerHTML += ".";
             
             return;
         }
 
 
-        const [wholeNumStr, decimalStr] = valueStr.split(",");
+        const [wholeNumStr, decimalStr] = valueStr.split(".");
 
         if (decimalStr) {
-            valueEl.textContent = parseFloat(wholeNumStr).toLocaleString() + "," + decimalStr;
+            valueEl.textContent = parseFloat(wholeNumStr).toLocaleString() + "." + decimalStr;
         }   else {
-            valueEl.textContent = parseFloat(wholeNumStr).toLocaleString;
+            valueEl.textContent = parseFloat(wholeNumStr).toLocaleString();
         }
     };
 
@@ -225,8 +227,8 @@ let operatorInMemory = null;
             button_comma.addEventListener("click", () => {
                 const currentValueStr = getValueAsStr();
 
-                if (!currentValueStr.includes(",")) {
-                    setStrAsValue(currentValueStr + ",");
+                if (!currentValueStr.includes(".")) {
+                    setStrAsValue(currentValueStr + ".");
                 }
             });
 
@@ -251,48 +253,6 @@ let operatorInMemory = null;
 
             setInterval(updateTime, 1000);
             updateTime();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -337,20 +297,3 @@ let operatorInMemory = null;
 // button_comma.addEventListener("click", () => {
 //     output.innerHTML += ",";
 // })
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
