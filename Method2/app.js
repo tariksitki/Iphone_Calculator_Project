@@ -247,6 +247,7 @@ let operatorInMemory = null;
                 // }
                 
                 hourEl.textContent = currentHour.toString();
+                
                 minuteEl.textContent = currentMinute.toString().padStart(2, "0");
 
             }
