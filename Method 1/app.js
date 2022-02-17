@@ -26,8 +26,22 @@ let button = document.getElementsByClassName("button");
 
 let myArray = [];
 
+           ////  function for result content limitation:
+            function myLimit() {
+                if (output_top.textContent.length > 10) {
+                    output_top.textContent = output_top.textContent.slice(output_top.textContent.length - 10, output_top.textContent.length);
+                    output_top.style.fontSize = "3rem";
+
+                }   else if (output_bottom.textContent.length > 10) {
+                    output_bottom.textContent = output_bottom.textContent.slice(output_bottom.textContent.length - 10, output_bottom.textContent.length);
+                    output_bottom.style.fontSize = "3rem";
+                }
+            }
+
+
+
         /// add function all buttons
-Array.from(button).forEach((e) => {
+    Array.from(button).forEach((e) => {
     e.addEventListener("click", () => {
         if (e.value == "") {
             return;
@@ -38,26 +52,70 @@ Array.from(button).forEach((e) => {
             if (e.value == "0"){
                 return;
             }   else {
-                output_bottom.innerHTML = "";
-                output_bottom.innerHTML += e.value;
-                myArray.push(e.value);  
+                if (e.value == "_") {       // the value of "-" = "_" in HTML
+                    output_bottom.innerHTML = "";
+                    output_bottom.innerHTML += "-";
+                    myArray.push(e.value);
+                }   else {
+                    output_bottom.innerHTML = "";
+                    output_bottom.innerHTML += e.value;
+                    myArray.push(e.value);
+                } 
             }
         } else {
-            output_bottom.innerHTML += e.value;
-            myArray.push(e.value);
+            if (e.value == "_") {           // the value of "-" = "_" in HTML
+                output_bottom.innerHTML += "-";
+                myArray.push(e.value);
+            }   else {
+                output_bottom.innerHTML += e.value;
+                myArray.push(e.value);
+            }
         }
+
 
                 ////  result content limitation:
 
-        if (output_bottom.textContent.length > 9) {
-            output_bottom.textContent = output_bottom.textContent.slice(output_bottom.textContent.length - 9, output_bottom.textContent.length);
-        }
+        // if (output_bottom.textContent.length > 9) {
+        //     output_bottom.textContent = output_bottom.textContent.slice(output_bottom.textContent.length - 9, output_bottom.textContent.length);
+        // }
+        myLimit()
         
     })
 })
 
-            ///  button equals add func
-    button_equals.addEventListener("click", () => {
+
+                //// plus_minus button:
+
+
+            let plus_minus = document.querySelector("#button_plus_minus");
+            plus_minus.addEventListener("click", () => {
+                if (output_bottom.textContent == "0") {
+                    return;
+                }  else {
+                    if (output_bottom.textContent[0] != "-" ){
+                        output_bottom.textContent = "-" + output_bottom.textContent;
+                        myArray.splice(0, 0, "-");
+                        // myArray = +(myArray.join(""));
+                        console.log(myArray);
+                        // console.log(typeof(myArray));
+
+                }   else if (output_bottom.textContent[0] == "-") {
+
+                        output_bottom.textContent = output_bottom.textContent.slice(1, output_bottom.textContent.length);
+                        myArray.splice(0, 1);
+                        console.log(myArray);
+                }
+                    }
+                    myLimit()
+            })
+            
+
+
+
+
+            ///  button equals:
+
+        button_equals.addEventListener("click", () => {
         let results;
 
         if (myArray.includes("x")) {
@@ -75,40 +133,39 @@ Array.from(button).forEach((e) => {
             output_top.innerHTML = num1 / num2;
             results = num1 / num2;
         
-        } else if (myArray.includes("-")) {
-            let num1 = +(myArray.slice(0, myArray.indexOf("-")).join(""));
+        } else if (myArray.includes("_")) {
+            
+            let num1 = +(myArray.slice(0, myArray.indexOf("_")).join(""));
 
-            num2 = +(myArray.slice(myArray.indexOf("-") + 1).join(""));
+            num2 = +(myArray.slice(myArray.indexOf("_") + 1).join(""));
             output_top.innerHTML = num1 - num2;
             results = num1 - num2;
 
         }   else if (myArray.includes("+")) {
-            let num1 = +(myArray.slice(0, myArray.indexOf("+")).join(""));
+            let num1 = Number(myArray.slice(0, myArray.indexOf("+")).join(""));
 
-            let num2 = +(myArray.slice(myArray.indexOf("+") + 1).join(""));
+            let num2 = Number(myArray.slice(myArray.indexOf("+") + 1).join(""));
 
             output_top.innerHTML = num1 + num2;
             results = num1 + num2;
+            console.log(num1, num2);
         }
 
         output_bottom.innerHTML = "";
         myArray = [results];
         // sonradan push yapacagimiz icin [] icerisine aldik
-        console.log(myArray);
-
-
+      
+        
         ////  result content limitation:
 
-        if (output_top.textContent.length > 10) {
-            output_top.textContent = output_top.textContent.slice(0, 10);
-        }
+        myLimit()
     })
 
 
 
 
 
-            /// button_percent add function:
+            /// button_percent:
 
     button_percent.addEventListener("click", ()=> {
         let results;
@@ -121,12 +178,8 @@ Array.from(button).forEach((e) => {
 
         
              ////  result content limitation:
-
-        if (output_top.textContent.length > 10) {
-            output_top.textContent = output_top.textContent.slice(0, 10);
-        }
+             myLimit()
     })
-
 
 
         // button AC add function:
@@ -135,11 +188,12 @@ Array.from(button).forEach((e) => {
         myArray = [];
         output_top.innerHTML = "";
         output_bottom.innerHTML = "0";
+        output_top.style.fontSize = "4rem";
+        output_bottom.style.fontSize = "4rem";
     })
 
 
     
-
         /// actuell Time:
 
     let hour = document.getElementById("hour");
@@ -162,5 +216,3 @@ Array.from(button).forEach((e) => {
 
         setInterval(updateTime, 1000);
         updateTime();
-
-
