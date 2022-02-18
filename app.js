@@ -51,11 +51,9 @@ let myArray = [];
         if (output_bottom.innerHTML == "0") {
             if (e.value == "0"){
                 return;
-            }   else {
-                if (e.value == "_") {       // the value of "-" = "_" in HTML
-                    output_bottom.innerHTML = "";
-                    output_bottom.innerHTML += "-";
-                    myArray.push(e.value);
+             }   else {
+                if (e.value == "_" || e.value == "+" || e.value == "x" || e.value == "/"){                  
+                    return;
                 }   else {
                     output_bottom.innerHTML = "";
                     output_bottom.innerHTML += e.value;
@@ -63,12 +61,31 @@ let myArray = [];
                 } 
             }
         } else {
+            let last = output_bottom.textContent[output_bottom.textContent.length - 1];
+
             if (e.value == "_") {           // the value of "-" = "_" in HTML
+                if (last == "+" || last == "-" || last == "/" || last == "x") {
+                    return;
+        
+            }   else {
                 output_bottom.innerHTML += "-";
                 myArray.push(e.value);
-            }   else {
+                }
+
+            }  else if (  (e.value == "_" || e.value == "+" || e.value == "x" || e.value == "/") && (last == "+" || last == "-" || last == "/" || last == "x")) {
+                button_multiply.removeEventListener("click", () => {
+                })
+                button_minus.removeEventListener("click", () => {
+                    output_bottom.innerHTML += "-";
+                    myArray.push(e.value);
+                    console.log(e.value);
+                })
+
+            }  
+            else {
                 output_bottom.innerHTML += e.value;
                 myArray.push(e.value);
+                console.log(e.value);
             }
         }
 
@@ -78,7 +95,8 @@ let myArray = [];
         // if (output_bottom.textContent.length > 9) {
         //     output_bottom.textContent = output_bottom.textContent.slice(output_bottom.textContent.length - 9, output_bottom.textContent.length);
         // }
-        myLimit()
+        myLimit();
+        // console.log(e.value);
         
     })
 })
@@ -109,9 +127,6 @@ let myArray = [];
                     myLimit()
             })
             
-
-
-
 
             ///  button equals:
 
@@ -148,10 +163,15 @@ let myArray = [];
 
             output_top.innerHTML = num1 + num2;
             results = num1 + num2;
-            console.log(num1, num2);
+            // console.log(num1, num2);
         }
 
-        output_bottom.innerHTML = "";
+        if (output_bottom.innerHTML != "0") {
+            output_bottom.innerHTML = "";
+        }   else {
+            return;
+        }
+        
         myArray = [results];
         // sonradan push yapacagimiz icin [] icerisine aldik
       
@@ -160,9 +180,6 @@ let myArray = [];
 
         myLimit()
     })
-
-
-
 
 
             /// button_percent:
@@ -210,8 +227,6 @@ let myArray = [];
         hour.textContent = currentHour.toString();
         minute.textContent = currentMinute.toString().padStart(2, "0");
         second.innerHTML = currentSecond.toString().padStart(2, "0");
-
-
     }
 
         setInterval(updateTime, 1000);
